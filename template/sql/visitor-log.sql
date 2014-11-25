@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `%s` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(20) NOT NULL DEFAULT '',
+  `country` varchar(255) DEFAULT '',
+  `city` varchar(255) DEFAULT '',
+  `region` varchar(255) DEFAULT '',
+  `trigger_timestamp` timestamp NULL DEFAULT NULL,
+  `referer` varchar(255) NOT NULL DEFAULT '',
+  `page_url` varchar(255) NOT NULL DEFAULT '',
+  `page_title` varchar(255) NOT NULL DEFAULT '',
+  `user_agent` varchar(255) NOT NULL DEFAULT '',
+  `spammer_flag` tinyint(1) DEFAULT '0',
+  `human_flag` tinyint(1) DEFAULT '0',
+  `crawler_flag` tinyint(1) DEFAULT '0',
+  `request_content` text,
+  `create_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`,`ip_address`),
+  KEY `ip_address` (`ip_address`),
+  KEY `trigger_timestamp` (`trigger_timestamp`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;

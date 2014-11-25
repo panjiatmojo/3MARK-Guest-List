@@ -74,7 +74,11 @@ function emgl_store_visitor_data_async($data = array())
 	if(get_option('emgl_visitor_meta') == true || (true == $data['block'] && true == get_option('emgl_spammer_store_full')))
 	{
 		/**	store the server variable if visitor meta option is true or if spammer is detected and store full content is enabled	**/
-		$data['request_content']   = mysql_real_escape_string(json_encode($_SERVER)); // Getting the Server Parameter
+		$temp_data['server'] = $_SERVER;	//	get the server parameter
+		$temp_data['post']  = $_POST;	//	get the post parameter
+		
+		$data['request_content'] = json_encode($temp_data); // store the parameter as string	
+		
 	}
 	else
 	{

@@ -70,6 +70,8 @@ function emgl_store_visitor_data_async($data = array())
 	$data['user_agent'] = $_SERVER['HTTP_USER_AGENT']; // Getting the Referer
 	$data['page_url']   = $_SERVER['REQUEST_URI']; // Getting the Requested URI
 	$data['page_title'] = emgl_get_page_title(); // Getting current Page Title
+	$data['server_variable'] = $_SERVER; // Store the server variable for behaviour analysis
+	$data['post_variable'] = $_POST; // Store the post variable for behaviour analysis
 	
 	if(get_option('emgl_visitor_meta') == true || (true == $data['block'] && true == get_option('emgl_spammer_store_full')))
 	{
@@ -265,7 +267,13 @@ function emgl_check_spammer($data = array())
     catch (e $exception) {
         $data['spammer_flag'] = 0;
     }
-    
+	
+	/**	if not a spammer further check with behaviour analysis	**/
+	if($data['spammer_flag'] == 0)
+	{
+		$data['spammer_flag'] = emgl_behaviour_analysis($data);	
+	}
+	
     return $data;
     
 }
@@ -543,6 +551,38 @@ function emgl_get_page_title()
 		$title = wp_title('', FALSE);	
 	}
 	return $title;
+}
+
+function emgl_behaviour_analysis($parameter)
+{
+	/**	this function check for visitor behavior and do the analysis	**/
+	$server = $parameter['server_variable'];
+	$post = $parameter['post_variable'];
+	$spammer_flag = 0;
+	
+	if($server['REQUEST_METHOD'] == "POST" && (!array_key_exists('HTTP_REFERER', $server) || $server['HTTP_REFERER'] == ""))
+	{
+		/**	check if request method is post but have no referer	**/
+		$spammer_flag = 1;
+	}
+	elseif($server['REQUEST_METHOD'] == "POST" && (!array_key_exists('HTTP_COOKIE', $server) || $server['HTTP_COOKIE'] == ""))
+	{
+		/**	check if request method is post but have no cookie	**/
+		$spammer_flag = 1;
+	}
+	
+	/**	debug to find response
+	$data = "REQUEST_METHOD:".$server['REQUEST_METHOD']."\r\n";
+	$data .= "HTTP_REFERER:".!array_key_exists('HTTP_REFERER', $server)."\r\n";
+	$data .= "HTTP_REFERER:".$server['HTTP_REFERER']."\r\n";
+	$data .= "HTTP_REFERER:".!array_key_exists('HTTP_COOKIE', $server)."\r\n";
+	$data .= "HTTP_REFERER:".$server['HTTP_COOKIE']."\r\n";
+	$data .= "COMPLETE_SERVER:".json_encode($server)."\r\n";
+	
+	file_put_contents('debug-behaviour.log', $data);
+	**/
+	
+	return $spammer_flag;
 }
 
 ?>

@@ -19,34 +19,34 @@
    
    /**	select most visited page by human	**/
    $page_visit_human_result = $wpdb->get_results($wpdb->prepare("SELECT 
-   page_title,
-   COUNT(page_title) AS page_visit 
+   page_url,
+   COUNT(page_url) AS page_visit 
    FROM `".EMGL_TABLE_VISITOR_LOG."` 
    WHERE DATE(trigger_timestamp) > DATE_SUB(CURDATE(), INTERVAL %d DAY)
    AND human_flag = 1
-   GROUP BY page_title 
+   GROUP BY page_url 
    ORDER BY page_visit DESC
    LIMIT 5", $summary_duration));
    
    /**	select most visited page by spammer	**/
    $page_visit_spammer_result = $wpdb->get_results($wpdb->prepare("SELECT 
-   page_title,
-   COUNT(page_title) AS page_visit 
+   page_url,
+   COUNT(page_url) AS page_visit 
    FROM `".EMGL_TABLE_VISITOR_LOG."` 
    WHERE DATE(trigger_timestamp) > DATE_SUB(CURDATE(), INTERVAL %d DAY) 
    AND spammer_flag = 1
-   GROUP BY page_title 
+   GROUP BY page_url 
    ORDER BY page_visit DESC
    LIMIT 5", $summary_duration));
    
    /**	select most visited page by crawler	**/
    $page_visit_crawler_result = $wpdb->get_results($wpdb->prepare("SELECT 
-   page_title,
-   COUNT(page_title) AS page_visit 
+   page_url,
+   COUNT(page_url) AS page_visit 
    FROM `".EMGL_TABLE_VISITOR_LOG."` 
    WHERE DATE(trigger_timestamp) > DATE_SUB(CURDATE(), INTERVAL %d DAY)
    AND crawler_flag = 1
-   GROUP BY page_title 
+   GROUP BY page_url 
    ORDER BY page_visit DESC
    LIMIT 5", $summary_duration));
    ?>
@@ -111,7 +111,7 @@
           foreach ($page_visit_human_result as $key => $content):?>
          <tr>
             <td style="text-align:center"><?php echo $row_count++;?></td>
-            <td><?php echo $content->page_title;?></td>
+            <td><?php echo $content->page_url;?></td>
             <td><?php echo $content->page_visit;?></td>
          </tr>
          <?php
@@ -137,7 +137,7 @@
             foreach ($page_visit_spammer_result as $key => $content):?>
          <tr>
             <td style="text-align:center"><?php echo $row_count++;?></td>
-            <td><?php echo $content->page_title;?></td>
+            <td><?php echo $content->page_url;?></td>
             <td><?php echo $content->page_visit;?></td>
          </tr>
          <?php
@@ -162,7 +162,7 @@
             foreach ($page_visit_crawler_result as $key => $content):?>
          <tr>
             <td style="text-align:center"><?php echo $row_count++;?></td>
-            <td><?php echo $content->page_title;?></td>
+            <td><?php echo $content->page_url;?></td>
             <td><?php echo $content->page_visit;?></td>
          </tr>
          <?php

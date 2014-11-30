@@ -58,4 +58,32 @@ table.em-table tr:hover td
 	color: #FFF;	
 }
 
+.pagination-wrapper {
+margin-bottom:20px;
+overflow:hidden;	
+}
+span.pagination-page {
+width: 30px;
+line-height: 30px;
+height:30px;
+display: block;
+margin-right: 10px;
+margin-bottom: 10px;
+float: left;
+text-align: center;
+cursor: pointer;
+background: #2ea2cc;
+border: 1px #0074a2 solid;
+border-radius:3px;
+-webkit-box-shadow: rgba(120, 200, 230, 0.6) 0px 1px 0px inset;
+box-shadow: rgba(120, 200, 230, 0.6) 0px 1px 0px inset;
+color: rgb(255, 255, 255);
+}
+
+span.active-page {
+background: #999;	
+border: 1px #888 solid;
+
+}
+
 </style>

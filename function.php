@@ -17,6 +17,8 @@ add_action('wp_ajax_nopriv_emgl_store_visitor_data', 'emgl_store_visitor_data_aj
 add_action('wp_ajax_emgl_get_rejection_ratio', 'emgl_get_rejection_ratio_ajax');
 add_action('wp_ajax_emgl_cleanup_visitor_data', 'emgl_cleanup_visitor_data_ajax');
 add_action('wp_ajax_emgl_spammer_analysis', 'emgl_spammer_analysis_hourly_ajax');
+add_action('wp_ajax_emgl_show_visitor_data', 'emgl_show_visitor_data_ajax');
+add_action('wp_ajax_emgl_show_blocked_visitor_data', 'emgl_show_blocked_visitor_data_ajax');
 
 
 /**	add cron job to update spammer table hourly	**/
@@ -583,6 +585,118 @@ function emgl_behaviour_analysis($parameter)
 	**/
 	
 	return $spammer_flag;
+}
+
+function emgl_show_pagination($parameter = array())
+{
+	/**	show pagination require 3 parameter to works	**/
+	$current_page = @$parameter['current_page'] ? $parameter['current_page'] : 0;
+	$max_page = @$parameter['total_page'] ? $parameter['total_page'] : 0;
+	$visible_page = @$parameter['visible_page'] ? $parameter['visible_page'] : 9;
+	
+	/**	include pagination template	**/
+	include(__DIR__.'/template/pagination.php');
+}
+
+
+function emgl_calculate_pagination_data($parameter)
+{
+	/**	calculate pagination data	**/
+	$parameter['admin_max_row'] = get_option('emgl_dashboard_visitor_row', 20);
+	$parameter['current_page'] = @$parameter['page'] ? $parameter['page'] : 0;
+	
+	$parameter['row_offset'] = $parameter['current_page'] * ($parameter['admin_max_row']);	  
+	$parameter['total_page'] = ceil($parameter['total_row'] / $parameter['admin_max_row']);
+	
+	return $parameter;
+}
+
+function emgl_show_visitor_data($parameter)
+{
+	$query_result = emgl_get_visitor_data_raw($parameter);
+	include(__DIR__.'/template/visitor-table.php');
+}
+
+function emgl_show_visitor_data_ajax()
+{
+	global $_POST;
+	$parameter = emgl_calculate_pagination_data($_POST);
+	
+	ob_start();
+	
+	emgl_show_visitor_data($parameter);
+	$result['result'] = ob_get_contents();
+	
+	ob_end_clean();
+
+	ob_start();
+	
+	emgl_show_pagination($parameter);
+	
+	$result['pagination'] = ob_get_contents();
+	
+	ob_end_clean();
+	
+	echo json_encode($result);
+	
+}
+
+function emgl_get_visitor_data_raw($parameter)
+{
+	global $wpdb;
+	
+	$row_offset = @$parameter['row_offset'] ? $parameter['row_offset'] : 0;
+	$admin_max_row = @$parameter['admin_max_row'] ? $parameter['admin_max_row'] : 0;
+
+
+	/**	get initial records	**/
+	$query_result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".EMGL_TABLE_VISITOR_LOG."` ORDER BY trigger_timestamp DESC LIMIT %d, %d", $row_offset, $admin_max_row));	
+	
+	return $query_result;
+}
+
+function emgl_show_blocked_visitor_data($parameter)
+{
+	$query_result = emgl_get_blocked_visitor_data_raw($parameter);
+	//var_dump($query_result);
+	include(__DIR__.'/template/blocked-visitor-table.php');
+}
+
+function emgl_show_blocked_visitor_data_ajax()
+{
+	global $_POST;
+	$parameter = emgl_calculate_pagination_data($_POST);
+	
+	ob_start();
+	
+	emgl_show_blocked_visitor_data($parameter);
+	$result['result'] = ob_get_contents();
+	
+	ob_end_clean();
+
+	ob_start();
+	
+	emgl_show_pagination($parameter);
+	
+	$result['pagination'] = ob_get_contents();
+	
+	ob_end_clean();
+	
+	echo json_encode($result);	
+}
+
+function emgl_get_blocked_visitor_data_raw($parameter)
+{
+	global $wpdb;
+	
+	$row_offset = @$parameter['row_offset'] ? $parameter['row_offset'] : 0;
+	$admin_max_row = @$parameter['admin_max_row'] ? $parameter['admin_max_row'] : 0;
+
+
+	/**	get initial records	**/
+	$query_result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".EMGL_TABLE_BLOCK_VISITOR_LOG."` ORDER BY trigger_timestamp DESC LIMIT %d, %d", $row_offset, $admin_max_row));	
+	
+	return $query_result;
 }
 
 ?>

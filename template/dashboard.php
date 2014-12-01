@@ -173,9 +173,7 @@
   <?php include(__DIR__.'/visitor-data-view.php');?>
   <?php include(__DIR__.'/blocked-visitor-data-view.php');?>
   <h2>Top 10 Spammer</h2>
-  <?php
-      
-      
+  <?php     
       /**	get initial records	**/
       $sql = sprintf("SELECT 
 	A.*, 
@@ -194,7 +192,7 @@
       ?>
   <p>Total Records <?php echo number_format($query_count_result,0);?> spammer</p>
   <p class="submit">
-    <input value="ANALYZE SPAM" id="execute-spammer-analysis" class="button button-primary" name="execute-spammer-analysis" type="button" />
+    <input value="ANALYZE" id="execute-spammer-analysis" class="button button-primary" name="execute-spammer-analysis" type="button" />
   </p>
   <div class="em-table-wrapper">
     <table class="em-table">
@@ -225,11 +223,3 @@
     </table>
   </div>
 </div>
-<script>
-
-jQuery(document).ready(function($) {
-	
-
-
-});
-</script> 

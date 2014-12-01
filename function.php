@@ -8,7 +8,6 @@ add_action('shutdown', 'emgl_store_visitor_data_async');
 /**	attach script load every time wp initialize	**/
 add_action('wp_head', 'emgl_load_script');
 
-
 /**	add ajax handler	**/
 add_action('wp_ajax_emgl_get_visitor_data', 'emgl_get_visitor_data_ajax');
 add_action('wp_ajax_nopriv_emgl_get_visitor_data', 'emgl_get_visitor_data_ajax');
@@ -20,7 +19,6 @@ add_action('wp_ajax_emgl_spammer_analysis', 'emgl_spammer_analysis_hourly_ajax')
 add_action('wp_ajax_emgl_show_visitor_data', 'emgl_show_visitor_data_ajax');
 add_action('wp_ajax_emgl_show_blocked_visitor_data', 'emgl_show_blocked_visitor_data_ajax');
 
-
 /**	add cron job to update spammer table hourly	**/
 add_action('wp', 'emgl_scheduler');
 
@@ -28,8 +26,6 @@ add_action('wp', 'emgl_scheduler');
 add_action('spammer_analysis_event', 'emgl_spammer_analysis_hourly');
 add_action('cleanup_visitor_data_event', 'emgl_cleanup_visitor_data_daily');
 add_action('emgl_store_visitor_data_event', 'emgl_store_visitor_data');
-
-
 
 function emgl_load_script()
 {
@@ -540,6 +536,11 @@ function emgl_enqueue_admin($hook) {
 
     wp_enqueue_script( 'emgl_dashboard_script', plugin_dir_url( __FILE__ ) . 'lib/js/dashboard.js' );
     wp_enqueue_script( 'emgl_chart', plugin_dir_url( __FILE__ ) . 'lib/js/highcharts/highcharts.js' );
+	
+	wp_localize_script('emgl_dashboard_script', 'emgl_dashboard_vars', array(
+			'image_folder' => __(plugins_url('lib/image/', __FILE__))
+		)
+	);
 }
 add_action( 'admin_enqueue_scripts', 'emgl_enqueue_admin' );
 

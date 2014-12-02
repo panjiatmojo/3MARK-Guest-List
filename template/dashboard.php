@@ -174,6 +174,8 @@
   <?php include(__DIR__.'/blocked-visitor-data-view.php');?>
   <h2>Top 10 Spammer</h2>
   <?php     
+      $spammer_analysis_duration   = get_option('emgl_spammer_analysis_duration');
+
       /**	get initial records	**/
       $sql = sprintf("SELECT 
 	A.*, 
@@ -181,7 +183,9 @@
 	B.country 
 	FROM `%s` A LEFT JOIN `%s` B 
 	ON A.ip_address = B.ip_address 
-   GROUP BY A.ip_address ORDER BY A.id LIMIT 10", EMGL_TABLE_SPAMMER_LIST, EMGL_TABLE_VISITOR_LOG); 
+	WHERE DATE(B.trigger_timestamp) > DATE_SUB(CURDATE(), INTERVAL %d DAY)
+   AND B.spammer_flag = 1 
+   GROUP BY A.ip_address ORDER BY A.id LIMIT 10", EMGL_TABLE_SPAMMER_LIST, EMGL_TABLE_VISITOR_LOG, $spammer_analysis_duration); 
       $query_result = $wpdb->get_results($sql);
       
       /**	get total record count	**/

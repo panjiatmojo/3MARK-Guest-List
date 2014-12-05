@@ -652,7 +652,7 @@ function emgl_get_visitor_data_raw($parameter)
 
 	/**	get initial records	**/
 	$query_result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".EMGL_TABLE_VISITOR_LOG."` ORDER BY trigger_timestamp DESC LIMIT %d, %d", $row_offset, $admin_max_row));	
-	
+		
 	return $query_result;
 }
 
@@ -698,6 +698,25 @@ function emgl_get_blocked_visitor_data_raw($parameter)
 	$query_result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".EMGL_TABLE_BLOCK_VISITOR_LOG."` ORDER BY trigger_timestamp DESC LIMIT %d, %d", $row_offset, $admin_max_row));	
 	
 	return $query_result;
+}
+
+function emgl_convert_array_to_list($array = array())
+{
+    $list = '<ol>';
+    foreach($array as $key => $value) {
+        $list .= sprintf("<li>%s<ol>", $key);
+        foreach($value as $key => $index) {
+            if(is_array($index)) {
+                $list .= sprintf("<li>%s: %s</li>", $key, emgl_convert_array_to_list($index));
+            } else {
+                $list .= sprintf("<li>%s: %s</li>", $key, $index);
+            }
+        }
+		$list .= sprintf("</ol></li>");
+   }
+
+    $list .= '</ol>';
+    return $list;
 }
 
 ?>

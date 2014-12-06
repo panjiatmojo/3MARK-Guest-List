@@ -568,11 +568,14 @@ function emgl_behaviour_analysis($parameter)
 		/**	check if request method is post but have no referer	**/
 		$spammer_flag = 1;
 	}
-	elseif($server['REQUEST_METHOD'] == "POST" && (!array_key_exists('HTTP_COOKIE', $server) || $server['HTTP_COOKIE'] == ""))
+	
+	if($server['REQUEST_METHOD'] == "POST" && (!array_key_exists('HTTP_COOKIE', $server) || $server['HTTP_COOKIE'] == ""))
 	{
 		/**	check if request method is post but have no cookie	**/
 		$spammer_flag = 1;
 	}
+	
+	/**	define other rules to check spammer	**/
 	
 	/**	debug to find response
 	$data = "REQUEST_METHOD:".$server['REQUEST_METHOD']."\r\n";

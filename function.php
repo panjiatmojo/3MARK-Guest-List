@@ -712,7 +712,7 @@ function emgl_convert_array_to_list($array = array())
             if(is_array($index)) {
                 $list .= sprintf("<li>%s: %s</li>", $key, emgl_convert_array_to_list($index));
             } else {
-                $list .= sprintf("<li>%s: %s</li>", $key, htmlspecialchars($index));
+                $list .= sprintf("<li>%s: %s</li>", $key, htmlentities($index));
             }
         }
 		$list .= sprintf("</ol></li>");

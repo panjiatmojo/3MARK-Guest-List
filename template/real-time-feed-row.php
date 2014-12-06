@@ -8,7 +8,7 @@
    
    	?>
 <tr>
-   <td><?php echo sprintf("<a href=\"%s\">%s: \"%s\" %s from %s%s</a>",$content->page_url, emgl_get_visitor_type($content), $content->page_title,$referer, $city, $country_name);?></td>
+   <td><?php echo sprintf("<a href=\"%s\">%s: \"%s\" %s from %s%s</a>",htmlentities($content->page_url), emgl_get_visitor_type($content), $content->page_title,$referer, $city, $country_name);?></td>
 </tr>
 <?php
    }

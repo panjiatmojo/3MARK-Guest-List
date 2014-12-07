@@ -18,6 +18,7 @@ add_action('wp_ajax_emgl_cleanup_visitor_data', 'emgl_cleanup_visitor_data_ajax'
 add_action('wp_ajax_emgl_spammer_analysis', 'emgl_spammer_analysis_hourly_ajax');
 add_action('wp_ajax_emgl_show_visitor_data', 'emgl_show_visitor_data_ajax');
 add_action('wp_ajax_emgl_show_blocked_visitor_data', 'emgl_show_blocked_visitor_data_ajax');
+add_action('wp_ajax_emgl_block_visitor_data', 'emgl_block_visitor_data_ajax');
 
 /**	add cron job to update spammer table hourly	**/
 add_action('wp', 'emgl_scheduler');
@@ -226,7 +227,7 @@ function emgl_check_crawler($data = array())
 {
     $user_agent = @($data['user_agent']) ? $data['user_agent'] : "";
     try {
-        if (preg_match_all('/([\w]*?(bot|crawler|spider)[\w]*?)/i', $user_agent, $match)) {
+        if (preg_match_all('/([\w]*?(bot|crawler|spider|Feedfetcher)[\w]*?)/i', $user_agent, $match)) {
             //	check for user agent that contain bot-like identity
             $data['crawler_flag'] = 1;
         } else {
@@ -572,7 +573,10 @@ function emgl_behaviour_analysis($parameter)
 	if($server['REQUEST_METHOD'] == "POST" && (!array_key_exists('HTTP_COOKIE', $server) || $server['HTTP_COOKIE'] == ""))
 	{
 		/**	check if request method is post but have no cookie	**/
-		$spammer_flag = 1;
+		
+		/**	this rule is disabled due to many false positive result	**/
+		
+		//$spammer_flag = 1;
 	}
 	
 	/**	define other rules to check spammer	**/
@@ -720,6 +724,49 @@ function emgl_convert_array_to_list($array = array())
 
     $list .= '</ol>';
     return $list;
+}
+
+
+function emgl_block_visitor_data_ajax()
+{
+	$parameter = $_POST;
+	
+	$result = emgl_block_visitor_data($parameter);
+	
+	echo json_encode($result);	
+}
+
+
+function emgl_block_visitor_data($parameter = array())
+{
+	global $wpdb;
+	
+	if($parameter['block_action'] == 'unblock')
+	{
+		$sql = $wpdb->prepare("UPDATE ". EMGL_TABLE_VISITOR_LOG ." SET spammer_flag = 0, human_flag = 1, crawler_flag = 0 WHERE ip_address = %s", $parameter['ip_address']);
+	}
+	elseif($parameter['block_action'] == 'block')
+	{
+		$sql = $wpdb->prepare("UPDATE ". EMGL_TABLE_VISITOR_LOG ." SET spammer_flag = 1, human_flag = 0, crawler_flag = 0 WHERE ip_address = %s", $parameter['ip_address']);
+	}
+	
+	$query_result = $wpdb->query($sql);
+	
+	if($query_result > 0)
+	{
+		$result['status'] = 'success';	
+	}
+	elseif($query_result == 0)
+	{
+		$result['status'] = 'error';	
+		$result['message'] = 'cannot found ip address';	
+	}	
+	elseif($query_result == false)
+	{
+		$result['status'] = 'error';	
+		$result['message'] = sprintf('failure to %s ip address', $parameter['block_action']);	
+	}
+	return $result;
 }
 
 ?>

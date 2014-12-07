@@ -62,7 +62,7 @@ table.em-table tr:hover td
 margin-bottom:20px;
 overflow:hidden;	
 }
-span.pagination-page {
+span.pagination-page, .emgl-block-action-button {
 width: 30px;
 line-height: 30px;
 height:30px;
@@ -84,6 +84,13 @@ span.active-page {
 background: #999;	
 border: 1px #888 solid;
 
+}
+
+.emgl-block-action-button
+{
+	width: auto;
+	line-height:100%;
+	font-size:10px;	
 }
 
 </style>

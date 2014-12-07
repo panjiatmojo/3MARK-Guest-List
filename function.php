@@ -195,24 +195,25 @@ function emgl_get_referer_type($parameter)
     $user_agent = @$parameter->user_agent ? $parameter->user_agent : "";
     $ip_address = @$parameter->ip_address ? $parameter->ip_address : "";
     $referer    = @$parameter->referer ? $parameter->referer : "";
-    
-    //	check for the referer
-    if ($referer !== "") {
-        //	if referer is exist then extract the domain only
-        preg_match_all('/http[s]*:\/\/([A-Za-z0-9.]+?)\//', $referer, $match);
-        $referer = (!is_null($match[1][0])) ? $match[1][0] : "";
-        
-        $parameter->referer = $referer;
-    }
+   
     //	check for the user agent
-    elseif ($user_agent !== "") {
-        if (preg_match_all('/([\w]*?(bot|crawler|spider)[\w]*?)/i', $user_agent, $match)) {
+    if ($user_agent !== "") {
+        if (preg_match_all('/([\w]*?(bot|crawler|spider|Feedfetcher)[\w]*?)/i', $user_agent, $match)) {
             //	check for user agent that contain bot-like identity
             $parameter->referer = $match[1][0];
         } else {
             //	if no bot-like identity matched then set as human
             $parameter->referer = "";
         }
+    }
+	 
+    //	check for the referer
+    elseif ($referer !== "") {
+        //	if referer is exist then extract the domain only
+        preg_match_all('/http[s]*:\/\/([A-Za-z0-9.]+?)\//', $referer, $match);
+        $referer = (!is_null($match[1][0])) ? $match[1][0] : "";
+        
+        $parameter->referer = $referer;
     }
     //	default action is set ip address as referer
     else {

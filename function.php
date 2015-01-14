@@ -201,27 +201,27 @@ function emgl_get_referer_type($parameter)
         if (preg_match_all('/([\w]*?(bot|crawler|spider|Feedfetcher)[\w]*?)/i', $user_agent, $match)) {
             //	check for user agent that contain bot-like identity
             $parameter->referer = $match[1][0];
+			return $parameter;
         } else {
             //	if no bot-like identity matched then set as human
             $parameter->referer = "";
         }
     }
-	 
     //	check for the referer
-    elseif ($referer !== "") {
+    if ($referer !== "") {
         //	if referer is exist then extract the domain only
         preg_match_all('/http[s]*:\/\/([A-Za-z0-9.]+?)\//', $referer, $match);
         $referer = (!is_null($match[1][0])) ? $match[1][0] : "";
         
         $parameter->referer = $referer;
+		
+		return $parameter;
     }
     //	default action is set ip address as referer
     else {
         $parameter->referer = $ip_address;
+		return $parameter;
     }
-    
-    return $parameter;
-    
 }
 
 function emgl_check_crawler($data = array())
@@ -535,7 +535,7 @@ function emgl_enqueue_admin($hook) {
     if ( 'emgl_top_menu' != $hook ) {
         //return;
     }
-
+	
     wp_enqueue_script( 'emgl_dashboard_script', plugin_dir_url( __FILE__ ) . 'lib/js/dashboard.js' );
     wp_enqueue_script( 'emgl_chart', plugin_dir_url( __FILE__ ) . 'lib/js/highcharts/highcharts.js' );
 	
@@ -544,7 +544,12 @@ function emgl_enqueue_admin($hook) {
 		)
 	);
 }
-add_action( 'admin_enqueue_scripts', 'emgl_enqueue_admin' );
+
+function emgl_register_script()
+{
+	/**	transit function to call script only on emgl admin menu	**/
+	add_action( 'admin_enqueue_scripts', 'emgl_enqueue_admin' );
+}
 
 function emgl_get_page_title()
 {

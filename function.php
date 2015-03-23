@@ -215,7 +215,7 @@ function emgl_get_referer_type($parameter)
     }
     //	default action is set ip address as referer
     else {
-        $parameter->referer = $ip_address;
+        $parameter->referer = "";
     }
     
     return $parameter;
@@ -721,5 +721,99 @@ function emgl_convert_array_to_list($array = array())
     $list .= '</ol>';
     return $list;
 }
+
+function get_feed_word($content)
+{
+	
+	$referer = @($content->referer) ? $content->referer : ""; 
+	$city = @($content->city) ? $content->city .", " : ""; 
+	$country_name = @($content->country) ? $content->country : ""; 
+
+	$visitor_type = emgl_get_visitor_type($content);
+
+	if($visitor_type == "human")
+	{
+		if(!empty($referer))
+		{
+			//	if referer is not empty then show
+			$result = sprintf("<a href=\"%s\">%s: \"%s\" via \"%s\" from %s%s</a>",
+			htmlentities($content->page_url), 
+			$visitor_type, 
+			$content->page_title,
+			$referer, 
+			$city, 
+			$country_name);
+			
+		}
+		elseif(empty($referer))
+		{
+			//	if referer not empty then show
+			$result = sprintf("<a href=\"%s\">%s: \"%s\" from %s%s</a>",
+			htmlentities($content->page_url), 
+			$visitor_type, 
+			$content->page_title,
+			$city, 
+			$country_name);
+				
+		}
+	}
+	elseif($visitor_type == "crawler")
+	{
+		if(!empty($referer))
+		{
+			//	if referer is not empty then show
+			$result = sprintf("<a href=\"%s\">%s: \"%s\" access \"%s\" from %s%s</a>",
+			htmlentities($content->page_url), 
+			$visitor_type, 
+			$referer, 
+			$content->page_title,
+			$city, 
+			$country_name);
+			
+		}
+		elseif(empty($referer))
+		{
+			//	if referer is not empty then show
+			$result = sprintf("<a href=\"%s\">%s: \"Bot\" access \"%s\" from %s%s</a>",
+			htmlentities($content->page_url), 
+			$visitor_type, 
+			$content->page_title,
+			$city, 
+			$country_name);
+				
+		}
+		
+	}
+	elseif($visitor_type == "spammer")
+	{
+		if(!empty($referer))
+		{
+			//	if referer is not empty then show
+			$result = sprintf("<a href=\"%s\">%s: \"%s\" via \"%s\" from %s%s</a>",
+			htmlentities($content->page_url), 
+			$visitor_type, 
+			$content->page_title,
+			$referer, 
+			$city, 
+			$country_name);
+			
+		}
+		elseif(empty($referer))
+		{
+			//	if referer not empty then show
+			$result = sprintf("<a href=\"%s\">%s: \"%s\" from %s%s</a>",
+			htmlentities($content->page_url), 
+			$visitor_type, 
+			$content->page_title,
+			$city, 
+			$country_name);
+				
+		}
+	}
+	
+	return $result;
+
+}
+
 
 ?>

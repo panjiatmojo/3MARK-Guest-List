@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="real-time-feed-row.php" server="ftp.theatmojo.com" local="130623600760346715" remote="130623384600000000" Dst="-1" />
-<file name="widget-style.php" server="ftp.theatmojo.com" local="130608850831769635" remote="130608643200000000" Dst="-1" />
-<file name="dashboard-style.php" server="ftp.theatmojo.com" local="130624675737746932" remote="130624459200000000" Dst="-1" />
-<file name="widget.php" server="ftp.theatmojo.com" local="130610281233287039" remote="130610335800000000" Dst="-1" />
-<file name="option.php" server="ftp.theatmojo.com" local="130613019320502284" remote="130613507400000000" Dst="-1" />
-<file name="option-style.php" server="ftp.theatmojo.com" local="130608849766298693" remote="130608643200000000" Dst="-1" />
-<file name="dashboard.php" server="ftp.theatmojo.com" local="130620044410000000" remote="130619827800000000" Dst="-1" />
-<file name="visitor-data-view.php" server="ftp.theatmojo.com" local="130618218469299084" remote="130624440600000000" Dst="-1" />
-<file name="blocked-visitor-data-view.php" server="ftp.theatmojo.com" local="130618218313770188" remote="130624440600000000" Dst="-1" />
-<file name="pagination.php" server="ftp.theatmojo.com" local="130618300995809330" remote="130624440600000000" Dst="-1" />
-<file name="visitor-table.php" server="ftp.theatmojo.com" local="130624657368336262" remote="130624441200000000" Dst="-1" />
-<file name="blocked-visitor-table.php" server="ftp.theatmojo.com" local="130624677097264692" remote="130624461000000000" Dst="-1" />
-<file name="blocked-visitor-data-view.php" server="theatmojo.com" local="130668916404809570" remote="130624980600000000" Dst="1" />
-<file name="blocked-visitor-table.php" server="theatmojo.com" local="130668916409489883" remote="130625001000000000" Dst="1" />
-<file name="dashboard-style.php" server="theatmojo.com" local="130668916409529900" remote="130624999200000000" Dst="1" />
-<file name="dashboard.php" server="theatmojo.com" local="130668916411129990" remote="130620367800000000" Dst="1" />
-<file name="option-style.php" server="theatmojo.com" local="130668916422490778" remote="130609183200000000" Dst="1" />
-<file name="pagination.php" server="theatmojo.com" local="130668916422890814" remote="130624980600000000" Dst="1" />
-<file name="option.php" server="theatmojo.com" local="130668916423970880" remote="130614047400000000" Dst="1" />
-<file name="real-time-feed-row.php" server="theatmojo.com" local="130715485342190783" remote="130715269200000000" Dst="0" />
-<file name="visitor-data-view.php" server="theatmojo.com" local="130668916443692269" remote="130624980600000000" Dst="1" />
-<file name="visitor-table.php" server="theatmojo.com" local="130668916444012286" remote="130624981200000000" Dst="1" />
-<file name="widget-style.php" server="theatmojo.com" local="130668916444092272" remote="130609183200000000" Dst="1" />
-<file name="widget.php" server="theatmojo.com" local="130668916449732679" remote="130610875800000000" Dst="1" />
+<file name="real-time-feed-row.php" server="ftp.theatmojo.com" local="130608850831469618" remote="130608643200000000" />
+<file name="widget-style.php" server="ftp.theatmojo.com" local="130608850831769635" remote="130608643200000000" />
+<file name="dashboard-style.php" server="ftp.theatmojo.com" local="130608849765258634" remote="130608643200000000" />
+<file name="widget.php" server="ftp.theatmojo.com" local="130610281233287039" remote="130610335800000000" />
+<file name="option.php" server="ftp.theatmojo.com" local="130613019320502284" remote="130613507400000000" />
+<file name="option-style.php" server="ftp.theatmojo.com" local="130608849766298693" remote="130608643200000000" />
+<file name="dashboard.php" server="ftp.theatmojo.com" local="130613739049346910" remote="130613523000000000" />
 </dwsync>

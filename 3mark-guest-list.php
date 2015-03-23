@@ -202,16 +202,10 @@ function emgl_menu()
 
 
 	/**	register the dashboard page	by override the top level slug	**/
-	$emgl_dashboard_page = add_submenu_page('emgl_top_menu', 'Guest List Dashboard', "Dashboard","manage_options", 'emgl_top_menu', 'emgl_top_menu');
-	
-	add_action('load-'.$emgl_dashboard_page, 'emgl_enqueue_admin');
+	add_submenu_page('emgl_top_menu', 'Guest List Dashboard', "Dashboard","manage_options", 'emgl_top_menu', 'emgl_top_menu');
 	
 	/**	register the option page	**/
-	$emgl_option_page = add_submenu_page('emgl_top_menu', 'Guest List Options', "Options","manage_options", 'emgl_option_menu', 'emgl_option_menu');
-
-	add_action('load-'.$emgl_dashboard_page, 'emgl_register_script');
-	add_action('load-'.$emgl_option_page, 'emgl_register_script');
-
+	add_submenu_page('emgl_top_menu', 'Guest List Options', "Options","manage_options", 'emgl_option_menu', 'emgl_option_menu');
 }
 
 function emgl_top_menu()
